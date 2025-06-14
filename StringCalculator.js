@@ -1,37 +1,39 @@
 function add(numbers) {
-  if (numbers === "") return 0;
+  if (!numbers.trim()) return 0;
 
-  let delimiter = /,|\n/;
   let numberString = numbers;
+  let delimiterPattern = /,|\n/;
 
   if (numbers.startsWith("//")) {
-    const delimiterSectionEnd = numbers.indexOf("\n");
-    const delimiterLine = numbers.slice(2, delimiterSectionEnd);
-    numberString = numbers.slice(delimiterSectionEnd + 1);
+    const delimiterEndIndex = numbers.indexOf("\n");
+    const delimiterSection = numbers.slice(2, delimiterEndIndex);
+    numberString = numbers.slice(delimiterEndIndex + 1);
 
-    const delimiterMatches = delimiterLine.match(/\[([^\]]+)\]/g);
+    const multipleDelimiters = delimiterSection.match(/\[([^\]]+)\]/g);
 
-    if (delimiterMatches) {
-      const delimiters = delimiterMatches.map((d) =>
+    if (multipleDelimiters) {
+      const escapedDelimiters = multipleDelimiters.map((d) =>
         d.slice(1, -1).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
       );
-      delimiter = new RegExp(delimiters.join("|"));
+      delimiterPattern = new RegExp(escapedDelimiters.join("|"));
     } else {
-      delimiter = new RegExp(
-        delimiterLine.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+      delimiterPattern = new RegExp(
+        delimiterSection.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
       );
     }
   }
 
-  const tokens = numberString.split(delimiter);
-  const nums = tokens.map((n) => parseInt(n, 10)).filter((n) => !isNaN(n));
+  const nums = numberString
+    .split(delimiterPattern)
+    .map((n) => parseInt(n, 10))
+    .filter((n) => !isNaN(n));
 
   const negatives = nums.filter((n) => n < 0);
   if (negatives.length > 0) {
     throw new Error(`negative numbers not allowed: ${negatives.join(", ")}`);
   }
 
-  return nums.reduce((sum, num) => sum + num, 0);
+  return nums.reduce((sum, n) => sum + n, 0);
 }
 
 module.exports = { add };
