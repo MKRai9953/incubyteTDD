@@ -15,6 +15,9 @@ test("adding two different number (non-zero)", () => {
 test("adding three different number (non-zero)", () => {
   expect(add("1,2,3")).toBe(6);
 });
+test("adding three different number (non-zero)", () => {
+  expect(add("1,2,3,4,5,6,7,8,9")).toBe(45);
+});
 
 test("handles newlines as delimiters", () => {
   expect(add("1\n2,3")).toBe(6);
