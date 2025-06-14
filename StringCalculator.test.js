@@ -11,3 +11,7 @@ test("returns number for a single value", () => {
 test("adding two different number (non-zero)", () => {
   expect(add("1,2")).toBe(3);
 });
+
+test("adding three different number (non-zero)", () => {
+  expect(add("1,2,3")).toBe(6);
+});
