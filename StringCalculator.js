@@ -26,7 +26,7 @@ function add(numbers) {
   const nums = numberString
     .split(delimiterPattern)
     .map((n) => parseInt(n, 10))
-    .filter((n) => !isNaN(n));
+    .filter((n) => !isNaN(n) && n <= 1000);
 
   const negatives = nums.filter((n) => n < 0);
   if (negatives.length > 0) {
